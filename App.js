@@ -5,7 +5,6 @@ import {Home} from "./components/Home.js"
 import {Gameboard} from "./components/Gameboard.js"
 import {Scoreboard} from "./components/Scoreboard.js"
 import { MaterialIcons } from '@expo/vector-icons'; 
-import { useLayoutEffect } from 'react';
 
 
 const Tab = createBottomTabNavigator();
