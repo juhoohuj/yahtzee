@@ -7,6 +7,7 @@ import {Scoreboard} from "./components/Scoreboard.js"
 import { MaterialIcons } from '@expo/vector-icons'; 
 
 
+
 const Tab = createBottomTabNavigator();
 
 const HOME = "Home";
