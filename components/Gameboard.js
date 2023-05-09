@@ -12,7 +12,7 @@ function randomNum() {
 let points = [[1, 0, true], [2, 0, true], [3, 0, true], [4, 0, true], [5, 0], true, [6, 0, true]]
 
 const Gameboard = () => {
-    let dices = [[0, false], [0, false], [0, false], [0, false], [0, false], [0, false]]
+    let dices = [[0, false], [0, false], [0, false], [0, false], [0, false]]
     const [thrownDices, setThrownDices] = useState([])
 
     function diceThrow() {
@@ -27,8 +27,9 @@ const Gameboard = () => {
         return (
             <View style={{flexDirection: 'row', alignSelf:"center"}}>
                 {thrownDices.map((n, index) => {
+                    const color = thrownDices[n[0] - 1][2] ? "orange" : "grey"
                     return (
-                            <MaterialCommunityIcons key={index} name={icons[n[0] - 1]} size={50} color="orange" onPress={() => dicePress(n)} />
+                            <MaterialCommunityIcons key={index} name={icons[n[0] - 1]} size={50} color={color} onPress={() => dicePress(n)} />
                         )     
                 })}
             </View>
