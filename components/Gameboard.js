@@ -11,72 +11,114 @@ function randomNum() {
 
 
 
+
 const Gameboard = () => {
-
-    let points = [[1, 0, true], [2, 0, true], [3, 0, true], [4, 0, true], [5, 0, true], [6, 0, true]]
-
-    let dices = [[0, false], [0, false], [0, false], [0, false], [0, false]]
-    const [thrownDices, setThrownDices] = useState([])
-    let throwsLeft = NBR_OF_THROWS
-
+    const [points, setPoints] = useState([
+      [1, 0, true],
+      [2, 0, true],
+      [3, 0, true],
+      [4, 0, true],
+      [5, 0, true],
+      [6, 0, true]
+    ]);
+  
+    let dices = [[0, false], [0, false], [0, false], [0, false], [0, false]];
+    const [thrownDices, setThrownDices] = useState([]);
+    const [isThrowDicesVisible, setThrowDicesVisible] = useState(true);
+    const [isAddToScoreVisible, setAddToScoreVisible] = useState(false);
+    const [throwsLeft, setThrowsLeft] = useState(NBR_OF_THROWS);
+  
     function diceThrow() {
         for (let i = 0; i < dices.length; i++) {
-            dices[i][0] = randomNum()
+          dices[i][0] = randomNum();
         }
-        setThrownDices([...dices])
-        throwsLeft--
-        console.log(throwsLeft)
-    }
-
+        setThrownDices([...dices]);
+        setThrowsLeft(throwsLeft - 1);
+        console.log(throwsLeft);
+    
+        setThrowDicesVisible(false);
+        setAddToScoreVisible(true);
+      }
+  
     const Buttons = () => {
         return (
-            <View style={{flexDirection: 'row', alignSelf:"center"}}>
-                {thrownDices.map((n, index) => {
-                    return (
-                            <MaterialCommunityIcons key={index} name={icons[n[0] - 1]} size={50} color="orange" onPress={() => dicePress(n)} />
-                        )     
-                })}
-            </View>
-        )
-    }
-    
-    function dicePress(item) {
-        let index = item[0] - 1
-        console.log(index)
-        if(points[index][2] == true) {
-            item[1] = !item[1]
+          <View style={{ flexDirection: 'row', alignSelf: "center" }}>
+            {thrownDices.map((n, index) => {
+              const diceNumber = n[0];
+              const isAddedToPoints = !points[diceNumber - 1][2];
+              const isSelected = n[1];
+      
+              let color = "orange";
+              if (isSelected) {
+                color = "green";
+              } else if (isAddedToPoints) {
+                color = "gray";
+              }
+      
+              return (
+                <MaterialCommunityIcons
+                  key={index}
+                  name={icons[diceNumber - 1]}
+                  size={50}
+                  color={color}
+                  onPress={() => dicePress(n)}
+                />
+              );
+            })}
+          </View>
+        );
+      };
+  
+      function dicePress(item) {
+        const index = item[0] - 1;
+        const isAlreadyAdded = !points[index][2];
+      
+        if (!isAlreadyAdded) {
+          item[1] = !item[1];
+          setThrownDices([...thrownDices]); // Update the thrownDices state
         }
 
-        console.log(thrownDices)
-    }
-
-    function addToScore() {
-        
+        console.log(thrownDices);
+      }
+  
+      function addToScore() {
         thrownDices.forEach((item) => {
-            if(item[1] == true) {
-                let number = item[0]
-                points[number - 1][1] += number
-                points[number - 1][2] = false
-            }
-        })
-        console.log(points)
-        setThrownDices([])
-    }
-
+          if (item[1] === true) {
+            let number = item[0];
+            points[number - 1][1] += number;
+            points[number - 1][2] = false;
+          }
+        });
+        console.log(points);
+        setThrownDices([]);
+    
+        setAddToScoreVisible(false);
+        setThrowDicesVisible(true);
+      }
 
     return(
         <View>
             <Text>{thrownDices}</Text>
             <Buttons/>
-            <Button 
-                onPress={diceThrow}
-                title="Throw dices"
-            />
-            <Button 
-                onPress={addToScore}
-                title="Add to score"
-            />
-            
+            {isThrowDicesVisible && (
+        <Button onPress={diceThrow} title="Throw dices" />
+      )}
+      {isAddToScoreVisible && (
+        <Button onPress={addToScore} title="Add to score" />
+      )}
+            <Text>Throws left: {throwsLeft}</Text>
+            <Text>POINTS</Text>
+            <View style={{flexDirection: 'row', alignSelf:"center"}}>
+                {points.map((n, index) => {
+                    return (
+                        <View key={index} style={{flexDirection: 'column', alignSelf:"center"}}>
+                            <Text>{n[0]}</Text>
+                            <Text>{n[1]}</Text>
+                        </View>
+                    )
+                })}
+            </View>
+
         </View>
 
     )
