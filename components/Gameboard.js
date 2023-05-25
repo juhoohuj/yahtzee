@@ -10,8 +10,6 @@ function randomNum() {
 }
 
 
-
-
 const Gameboard = () => {
     const [points, setPoints] = useState([
       [1, 0, true],
