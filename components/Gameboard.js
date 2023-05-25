@@ -22,21 +22,36 @@ const Gameboard = () => {
   
     let dices = [[0, false], [0, false], [0, false], [0, false], [0, false]];
     const [thrownDices, setThrownDices] = useState([]);
-    const [isThrowDicesVisible, setThrowDicesVisible] = useState(true);
-    const [isAddToScoreVisible, setAddToScoreVisible] = useState(false);
     const [throwsLeft, setThrowsLeft] = useState(NBR_OF_THROWS);
+
+    function checkPoints() {
+      let pointsLeft = false;
+      points.forEach((item) => {
+        if (item[2] === true) {
+          pointsLeft = true;
+        }
+      });
+      return pointsLeft;
+    }
   
     function diceThrow() {
+
+
+      if(checkPoints() === true) {
+
         for (let i = 0; i < dices.length; i++) {
-          dices[i][0] = randomNum();
+          if (dices[i][1] === false) {
+            dices[i][0] = randomNum();
+          }
         }
+
         setThrownDices([...dices]);
         setThrowsLeft(throwsLeft - 1);
         console.log(throwsLeft);
-    
-        setThrowDicesVisible(false);
-        setAddToScoreVisible(true);
+      } else {
+        alert("No points left to add");
       }
+  }
   
     const Buttons = () => {
         return (
@@ -89,21 +104,14 @@ const Gameboard = () => {
         });
         console.log(points);
         setThrownDices([]);
-    
-        setAddToScoreVisible(false);
-        setThrowDicesVisible(true);
       }
 
     return(
         <View>
             <Text>{thrownDices}</Text>
             <Buttons/>
-            {isThrowDicesVisible && (
-        <Button onPress={diceThrow} title="Throw dices" />
-      )}
-      {isAddToScoreVisible && (
-        <Button onPress={addToScore} title="Add to score" />
-      )}
+            <Button onPress={diceThrow} title="Throw dices" />
+            <Button onPress={addToScore} title="Add to score" />
             <Text>Throws left: {throwsLeft}</Text>
             <Text>POINTS</Text>
             <View style={{flexDirection: 'row', alignSelf:"center"}}>
@@ -116,7 +124,7 @@ const Gameboard = () => {
                     )
                 })}
             </View>
-
+                <Button title="test" onPress={checkPoints}/>
         </View>
 
     )
