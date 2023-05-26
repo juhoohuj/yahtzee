@@ -1,8 +1,10 @@
-import { View, Text, ViewComponent, Button, Pressable} from "react-native"
+import { View, Text, ViewComponent, Pressable} from "react-native"
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Home, NBR_OF_DICES, NBR_OF_THROWS, MIN_SPOT, MAX_SPOT, BONUS_POINTS_LIMIT, BONUS_POINTS, NBR_OF_SCOREBOARD_ROWS, PLAYER} from "./Home";   
 import { useState, useEffect } from "react";
 import Styles from "../styles/Styles.js";
+import { Button } from '@rneui/themed';
+import {AsyncStorage} from 'react-native';
 
 
 const icons = ["dice-1", "dice-2", "dice-3", "dice-4", "dice-5", "dice-6"]
@@ -12,12 +14,21 @@ const Gameboard = () => {
 
 useEffect(() => {
   let totalScore = 0;
-
   points.forEach((item) => {
     totalScore += item[1];
   });
+
+  if (totalScore >= BONUS_POINTS_LIMIT) {
+    totalScore += BONUS_POINTS;
+  }
+  
   setScore(totalScore);
+
+
 }, [addToScore])
+
+
+//create functionality to add 50 points to score if score is above 63
 
 
 
@@ -31,13 +42,12 @@ useEffect(() => {
       [3, 0, true],
       [4, 0, true],
       [5, 0, true],
-      [6, 0, true]
+      [6, 60, false]
     ]);
   
     const [dices, setDices] = useState([[0, false], [0, false], [0, false], [0, false], [0, false]])
     const [thrownDices, setThrownDices] = useState([]);
     const [throwsLeft, setThrowsLeft] = useState(NBR_OF_THROWS);
-    const [spotsLeft, setSpotsLeft] = useState(6)
     const [score, setScore] = useState(0);
 
     function checkPoints() {
@@ -90,7 +100,7 @@ useEffect(() => {
                 <MaterialCommunityIcons
                   key={index}
                   name={icons[diceNumber - 1]}
-                  size={50}
+                  size={60}
                   color={color}
                   onPress={() => dicePress(n)}
                 />
@@ -121,10 +131,10 @@ useEffect(() => {
               points[number - 1][2] = false;
             }
           });
-          console.log(points);
           setThrownDices([]);
           setThrowsLeft(NBR_OF_THROWS);
           setDices([[0, false], [0, false], [0, false], [0, false], [0, false]]);
+
         }
 
         else {
@@ -132,14 +142,37 @@ useEffect(() => {
         }
       }
 
+      function addScoreToScoreboard() {
+        let date = new Date();
+        let dateStr = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
+        let newScore = {
+          name: PLAYER,
+          score: score,
+          date: dateStr
+        }
+
+        AsyncStorage.getItem("scoreboard").then((value) => {
+          let scoreboard = [];
+          if (value !== null) {
+            scoreboard = JSON.parse(value);
+          }
+          scoreboard.push(newScore);
+          AsyncStorage.setItem("scoreboard", JSON.stringify(scoreboard));
+        });
+      }
+
     return(
         <View style={Styles.container}>
+          <Text style={Styles.subtitle}>Current player : {PLAYER}</Text>
+          <View style={Styles.buttons}>
             <Buttons/>
-            {throwsLeft > 0 ? <Button onPress={diceThrow} title="Throw dices" /> : null}
-            <Button onPress={addToScore} title="Add to score" />
-            <Text>Throws left: {throwsLeft}</Text>
-            <Text>POINTS</Text>
-            <View style={{flexDirection: 'row', alignSelf:"center"}}>
+          </View>
+          <View>
+            {throwsLeft > 0 ? <Button style={Styles.button} onPress={diceThrow} title="Throw dices" /> : null}
+            <Button style={Styles.button} onPress={addToScore} title="Add to score" />
+            <Text style={Styles.subtitle}>Throws left: {throwsLeft}</Text>
+            <Text style={Styles.subtitle}>POINTS</Text>
+            <View style={Styles.points}>
                 {points.map((n, index) => {
                     return (
                         <View key={index} style={{flexDirection: 'column', alignSelf:"center"}}>
@@ -150,7 +183,10 @@ useEffect(() => {
                 })}
             </View>
 
-                <Text>Current score: {score}</Text>
+              <Text style={Styles.subtitle}>Current score: {score}</Text>
+          </View>
+          <Button style={Styles.button} title="Add score to scoreboard"/>
+          
         </View>
 
     )

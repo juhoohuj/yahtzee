@@ -5,8 +5,36 @@ export default StyleSheet.create ({
       flex: 1,
       backgroundColor: '#fff',
       alignItems: 'center',
-      justifyContent: 'center',
       padding: 20,
     },
+    buttons: {
+      justifyContent: 'space-between',
+      width: '100%',
+      marginBottom: 20,
+    },
+    subtitle: {
+      fontSize: 20,
+      fontWeight: 'bold',
+      marginTop: 20,
+      marginBottom: 10,
+      alignSelf: 'center',
+
+    },
+    points: {
+      flexDirection: 'row',
+      justifyContent: 'space-evenly',
+      width: '100%',
+      padding: 20,
+      alignItems: 'center',
+
+    },
+
+    button: {
+      marginTop: 20,
+      borderRadius: 10,
+      width: 200,
+      alignSelf: 'center',
+    }
+
   
   })
