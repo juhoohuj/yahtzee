@@ -21,7 +21,7 @@ useEffect(() => {
   if (totalScore >= BONUS_POINTS_LIMIT) {
     totalScore += BONUS_POINTS;
   }
-  
+
   setScore(totalScore);
 
 
@@ -42,7 +42,7 @@ useEffect(() => {
       [3, 0, true],
       [4, 0, true],
       [5, 0, true],
-      [6, 60, false]
+      [6, 0, true]
     ]);
   
     const [dices, setDices] = useState([[0, false], [0, false], [0, false], [0, false], [0, false]])
