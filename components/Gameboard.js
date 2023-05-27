@@ -4,13 +4,20 @@ import { Home, NBR_OF_DICES, NBR_OF_THROWS, MIN_SPOT, MAX_SPOT, BONUS_POINTS_LIM
 import { useState, useEffect } from "react";
 import Styles from "../styles/Styles.js";
 import { Button } from '@rneui/themed';
-import {AsyncStorage} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { NavigationContainer } from "@react-navigation/native";
 
 
 const icons = ["dice-1", "dice-2", "dice-3", "dice-4", "dice-5", "dice-6"]
 
 
-const Gameboard = () => {
+const Gameboard = ( {navigation, route} ) => {
+
+  useEffect(() => {
+    if (route.params?.newGame) {
+      newGame();
+    }
+  }, [route.params?.newGame]);
 
 useEffect(() => {
   let totalScore = 0;
@@ -24,12 +31,7 @@ useEffect(() => {
 
   setScore(totalScore);
 
-
 }, [addToScore])
-
-
-//create functionality to add 50 points to score if score is above 63
-
 
 
   function randomNum() {
@@ -49,6 +51,7 @@ useEffect(() => {
     const [thrownDices, setThrownDices] = useState([]);
     const [throwsLeft, setThrowsLeft] = useState(NBR_OF_THROWS);
     const [score, setScore] = useState(0);
+
 
     function checkPoints() {
       let pointsLeft = false;
@@ -121,6 +124,22 @@ useEffect(() => {
 
         console.log(thrownDices);
       }
+
+      function newGame() {
+        setPoints([
+          [1, 0, true],
+          [2, 0, true],
+          [3, 0, true],
+          [4, 0, true],
+          [5, 0, true],
+          [6, 0, true]
+        ]);
+      
+        setDices([[0, false], [0, false], [0, false], [0, false], [0, false]]);
+        setThrownDices([]);
+        setThrowsLeft(NBR_OF_THROWS);
+        setScore(0);
+      }
   
       function addToScore() {
         if (throwsLeft == 0) {
@@ -159,6 +178,9 @@ useEffect(() => {
           scoreboard.push(newScore);
           AsyncStorage.setItem("scoreboard", JSON.stringify(scoreboard));
         });
+
+        alert("Score added to scoreboard");
+        navigation.navigate("Scoreboard");
       }
 
     return(
@@ -185,7 +207,9 @@ useEffect(() => {
 
               <Text style={Styles.subtitle}>Current score: {score}</Text>
           </View>
-          <Button style={Styles.button} title="Add score to scoreboard"/>
+          
+          { //checkPoints() ? null : 
+          <Button style={Styles.button} onPress={addScoreToScoreboard} title="Add score to scoreboard" /> }
           
         </View>
 

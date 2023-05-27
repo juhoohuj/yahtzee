@@ -34,7 +34,29 @@ export default StyleSheet.create ({
       borderRadius: 10,
       width: 200,
       alignSelf: 'center',
-    }
+    },
 
+    scorecontainer: {
+      flex: 1,
+      backgroundColor: '#fff',
+
+    },
+
+    scoreboard: {
+      flexDirection: 'row',
+      width: '100%',
+      padding: 20,
+      alignItems: 'center',
+    },
   
+    scoreboardheading: {
+      flexDirection: 'row',
+      justifyContent: 'space-evenly',
+      width: '100%',
+      padding: 20,
+      alignItems: 'center',
+      borderBottomWidth: 1,
+      borderBottomColor: 'black',
+      backgroundColor: 'lightgrey',
+    },
   })
