@@ -6,6 +6,8 @@ import Styles from "../styles/Styles.js";
 import { Button } from '@rneui/themed';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from "@react-navigation/native";
+import { Header } from "./Header";
+import { Footer } from "./Footer";
 
 
 const icons = ["dice-1", "dice-2", "dice-3", "dice-4", "dice-5", "dice-6"]

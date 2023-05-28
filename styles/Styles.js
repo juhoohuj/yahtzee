@@ -59,4 +59,15 @@ export default StyleSheet.create ({
       borderBottomColor: 'black',
       backgroundColor: 'lightgrey',
     },
+
+    header: {
+      backgroundColor: 'lightgrey',
+      width: '100%',
+      padding: 20,
+      alignItems: 'center',
+      borderBottomWidth: 1,
+      borderBottomColor: 'black',
+    },
+
+    }
   })
