@@ -65,10 +65,10 @@ const Scoreboard = ( {navigation} ) => {
               })}
             </ScrollView>
           </DataTable>
-          <Button containerStyle={Styles.button} onPress={() => navigation.navigate('Home')}>
+          <Button color="orange" containerStyle={Styles.button} onPress={() => navigation.navigate('Home')}>
             Back to Home
           </Button>
-          <Button title="Play Again" containerStyle={{...Styles.button, marginBottom:20,}} onPress={() => navigation.navigate('Gameboard', { newGame: true })}>
+          <Button title="Play Again" color="orange" containerStyle={{...Styles.button, marginBottom:20,}} onPress={() => navigation.navigate('Gameboard', { newGame: true })}>
           </Button>
         </View>
       );
