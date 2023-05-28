@@ -1,11 +1,8 @@
-import { View, Text, ViewComponent, Pressable, ScrollView, useLayoutEffect, useCallback} from "react-native"
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Home, NBR_OF_DICES, NBR_OF_THROWS, MIN_SPOT, MAX_SPOT, BONUS_POINTS_LIMIT, BONUS_POINTS, NBR_OF_SCOREBOARD_ROWS, PLAYER} from "./Home";   
+import { View, Text, ScrollView,} from "react-native"
 import { useState, useEffect } from "react";
 import Styles from "../styles/Styles.js";
 import { Button } from '@rneui/themed';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { NavigationContainer } from "@react-navigation/native";
 import { DataTable } from 'react-native-paper';
 
 
@@ -16,40 +13,30 @@ const Scoreboard = ( {navigation} ) => {
 
     //function to get scores from async storage and set them to state
     const getScores = async () => {
-        try {
-          const jsonValue = await AsyncStorage.getItem('scoreboard');
-          if (jsonValue !== null) {
-            const parsedValue = JSON.parse(jsonValue);
-            setScores(parsedValue);
-          }
-        } catch (e) {
-          console.log(e);
+      try {
+        const jsonValue = await AsyncStorage.getItem('scoreboard');
+        if (jsonValue !== null) {
+          const parsedValue = JSON.parse(jsonValue);
+          const sortedScores = parsedValue.sort((a, b) => {
+            return b.score - a.score;
+          });
+          setScores(sortedScores);
         }
-      };
-
-    //function to sort scores
-    const sortScores = () => {
-        const sortedScores = [...scores].sort((a, b) => {
-          return b[1] - a[1];
-        });
-      
-        setScores(sortedScores);
-      };
+      } catch (e) {
+        console.log(e);
+      }
+    };
 
     //useEffect to get scores from async storage and sort them
     useEffect(() => {
-        const getAndSortScores = async () => {
-          await getScores();
-          sortScores();
-        };
-      
-        getAndSortScores();
-      
-        const unsubscribe = navigation.addListener("focus", getAndSortScores);
+        getScores();
+        const unsubscribe = navigation.addListener("focus", getScores);
       
         return unsubscribe;
       }, [navigation]);
 
+
+      
       function clearScores() {
         AsyncStorage.removeItem('scoreboard');
         getScores();
@@ -59,7 +46,7 @@ const Scoreboard = ( {navigation} ) => {
 
       return (
         <View style={Styles.scorecontainer}>
-          <Text style={Styles.subtitle}>Scoreboard</Text>
+          <Text style={Styles.subtitle}>Top scores</Text>
           <DataTable style={{ flex: 1 }}>
             <DataTable.Header>
               <DataTable.Title style={{ flex: 1, justifyContent: 'center' }}>Date</DataTable.Title>
@@ -78,13 +65,11 @@ const Scoreboard = ( {navigation} ) => {
               })}
             </ScrollView>
           </DataTable>
-          <Button style={Styles.button} onPress={() => navigation.navigate('Home')}>
+          <Button containerStyle={Styles.button} onPress={() => navigation.navigate('Home')}>
             Back to Home
           </Button>
-          <Button style={Styles.button} onPress={() => navigation.navigate('Gameboard', { newGame: true })}>
-            Play Again
+          <Button title="Play Again" containerStyle={{...Styles.button, marginBottom:20,}} onPress={() => navigation.navigate('Gameboard', { newGame: true })}>
           </Button>
-          <Button style={Styles.button} title="test" onPress={clearScores} />
         </View>
       );
       

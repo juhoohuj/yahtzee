@@ -1,8 +1,10 @@
-import { View, Text, Button, StyleSheet } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { useState } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import { TextInput } from "react-native-paper";
 import { NavigationContainer } from "@react-navigation/native";
+import { Button } from "@rneui/themed";
+import Styles from "../styles/Styles.js";
 
 export const NBR_OF_DICES = 5;
 export const NBR_OF_THROWS = 3;
@@ -19,11 +21,16 @@ const Home = ({ navigation }) => {
   const [player, setPlayer] = useState("");
 
   function getName() {
-    PLAYER = player
+    return PLAYER = player
   }
 
   function buttonPressed() {
-    setPressed(true);
+    if (player === "") {
+      alert("Please enter your name");
+    }
+    else {
+      setPressed(true);
+    }
   }
 
   if (pressed == false) {
@@ -35,7 +42,7 @@ const Home = ({ navigation }) => {
           onChangeText={(text) => setPlayer(text)}
           value={player}
         />
-        <Button onPress={buttonPressed} title="Add" />
+        <Button color="green" containerStyle={Styles.button} onPress={buttonPressed} title="Let's play" />
       </View>
     );
   } else {
@@ -59,11 +66,12 @@ const Home = ({ navigation }) => {
           Good luck {player}
         </Text>
         <Button
-          title="OK"
+          title="PLAY"
+          color="green"
+          containerStyle={Styles.button}
           onPress={() => {
             navigation.navigate("Gameboard"), getName();
           }}
-          
         />
       </>
       

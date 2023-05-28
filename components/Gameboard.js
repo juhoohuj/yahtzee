@@ -163,24 +163,28 @@ useEffect(() => {
 
       function addScoreToScoreboard() {
         let date = new Date();
-        let dateStr = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
+        let dateStr =
+          date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
         let newScore = {
           name: PLAYER,
           score: score,
-          date: dateStr
-        }
-
-        AsyncStorage.getItem("scoreboard").then((value) => {
-          let scoreboard = [];
-          if (value !== null) {
-            scoreboard = JSON.parse(value);
-          }
-          scoreboard.push(newScore);
-          AsyncStorage.setItem("scoreboard", JSON.stringify(scoreboard));
-        });
-
-        alert("Score added to scoreboard");
-        navigation.navigate("Scoreboard");
+          date: dateStr,
+        };
+      
+        AsyncStorage.getItem("scoreboard")
+          .then((value) => {
+            let scoreboard = [];
+            if (value !== null) {
+              scoreboard = JSON.parse(value);
+            }
+            scoreboard.push(newScore);
+            return AsyncStorage.setItem("scoreboard", JSON.stringify(scoreboard));
+          })
+          .then(() => {
+            alert("Score added to scoreboard");
+            return navigation.navigate("Scoreboard");
+          })
+          .catch((error) => console.log(error));
       }
 
     return(
@@ -190,15 +194,15 @@ useEffect(() => {
             <Buttons/>
           </View>
           <View>
-            {throwsLeft > 0 ? <Button style={Styles.button} onPress={diceThrow} title="Throw dices" /> : null}
-            <Button style={Styles.button} onPress={addToScore} title="Add to score" />
+            {throwsLeft > 0 ? <Button color="orange" containerStyle={Styles.button} onPress={diceThrow} title="Throw dices" /> : null}
+            <Button color="orange" containerStyle={Styles.button} onPress={addToScore} title="Add to score" />
             <Text style={Styles.subtitle}>Throws left: {throwsLeft}</Text>
             <Text style={Styles.subtitle}>POINTS</Text>
             <View style={Styles.points}>
                 {points.map((n, index) => {
                     return (
-                        <View key={index} style={{flexDirection: 'column', alignSelf:"center"}}>
-                            <Text>{n[0]}</Text>
+                        <View key={index} style={{flexDirection: 'column', alignItems:"center"}}>
+                            <Text style={{fontWeight:"bold"}}>D{n[0]}</Text>
                             <Text>{n[1]}</Text>
                         </View>
                     )
@@ -208,8 +212,7 @@ useEffect(() => {
               <Text style={Styles.subtitle}>Current score: {score}</Text>
           </View>
           
-          { //checkPoints() ? null : 
-          <Button style={Styles.button} onPress={addScoreToScoreboard} title="Add score to scoreboard" /> }
+          {checkPoints() ? null : <Button color="green" containerStyle={Styles.button} onPress={addScoreToScoreboard} title="Add score to scoreboard" /> }
           
         </View>
 
