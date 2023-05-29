@@ -33,7 +33,6 @@ useEffect(() => {
 
   if (totalScore >= BONUS_POINTS_LIMIT) {
     totalScore += BONUS_POINTS;
-    alert("You got a bonus of " + BONUS_POINTS + " points!");
   }
 
   setScore(totalScore);
@@ -48,7 +47,7 @@ useEffect(() => {
       [3, 0, true],
       [4, 0, true],
       [5, 0, true],
-      [6, 0, true]
+      [6, 60, true]
     ]);
   
     const [dices, setDices] = useState([[0, false], [0, false], [0, false], [0, false], [0, false]])
@@ -214,6 +213,7 @@ useEffect(() => {
                 })}
             </View>
               <Text style={Styles.subtitle}>Current score: {score}</Text>
+              {score >= BONUS_POINTS_LIMIT ? <Text style={Styles.subtitle}>You got bonus points!</Text> : null}
               {checkPoints() ? null : <Button color="green" containerStyle={Styles.button} onPress={addScoreToScoreboard} title="Add score to scoreboard" /> }
               
           </View>
