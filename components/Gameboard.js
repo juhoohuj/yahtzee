@@ -217,7 +217,6 @@ useEffect(() => {
               {checkPoints() ? null : <Button color="green" containerStyle={Styles.button} onPress={addScoreToScoreboard} title="Add score to scoreboard" /> }
               
           </View>
-          
           <Footer/>
         </View>
 

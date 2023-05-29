@@ -4,7 +4,8 @@ import Styles from "../styles/Styles.js";
 import { Button } from '@rneui/themed';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DataTable } from 'react-native-paper';
-
+import { Header } from "./Header";
+import { Footer } from "./Footer";
 
 
 const Scoreboard = ( {navigation} ) => {
@@ -46,6 +47,7 @@ const Scoreboard = ( {navigation} ) => {
 
       return (
         <View style={Styles.scorecontainer}>
+          <Header/>
           <Text style={Styles.subtitle}>Top scores</Text>
           <DataTable style={{ flex: 1 }}>
             <DataTable.Header>
@@ -70,7 +72,9 @@ const Scoreboard = ( {navigation} ) => {
           </Button>
           <Button title="Play Again" color="orange" containerStyle={{...Styles.button, marginBottom:20,}} onPress={() => navigation.navigate('Gameboard', { newGame: true })}>
           </Button>
+          <Footer/>
         </View>
+
       );
       
 }

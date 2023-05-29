@@ -38,7 +38,7 @@ export default StyleSheet.create ({
     scorecontainer: {
       flex: 1,
       backgroundColor: '#fff',
-
+      paddingBottom: 60,
     },
 
     scoreboard: {
@@ -92,6 +92,7 @@ export default StyleSheet.create ({
       flex: 1,
       backgroundColor: '#fff',
       alignItems: 'center',
+
     },
 
   })
