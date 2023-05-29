@@ -1,10 +1,12 @@
 import { View, Text, StyleSheet } from "react-native";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import { TextInput } from "react-native-paper";
 import { NavigationContainer } from "@react-navigation/native";
 import { Button } from "@rneui/themed";
 import Styles from "../styles/Styles.js";
+import { Header } from "./Header";
+import { Footer } from "./Footer";
 
 export const NBR_OF_DICES = 5;
 export const NBR_OF_THROWS = 3;
@@ -33,21 +35,28 @@ const Home = ({ navigation }) => {
     }
   }
 
+  const inputRef = useRef();
+
   if (pressed == false) {
     return (
-      <View>
-        <Text style={{ textAlign: "center" }}>Please enter your name </Text>
+      <View style={Styles.homecontainer}>
+        <Header/>
+        <Text style={Styles.subtitle}>Please enter your name </Text>
         <TextInput
-          style={{ margin: 20 }}
+          style={{ margin: 20, width: "80%", textAlign: "center" }}
+          ref={inputRef}
+          onLayout={()=> inputRef.current.focus()}
           onChangeText={(text) => setPlayer(text)}
           value={player}
         />
         <Button color="green" containerStyle={Styles.button} onPress={buttonPressed} title="Let's play" />
+        <Footer/>
       </View>
     );
   } else {
     return (
       <>
+        <Header />
         <Text style={{ textAlign: "center", padding: 25 }}>
           THE GAME: Upper section of the classic Yahtzee dice game. You have{" "}
           {NBR_OF_DICES} dices and for the every dice you have {NBR_OF_THROWS}{" "}
@@ -73,6 +82,7 @@ const Home = ({ navigation }) => {
             navigation.navigate("Gameboard"), getName();
           }}
         />
+        <Footer />
       </>
       
     );

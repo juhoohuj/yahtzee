@@ -5,17 +5,16 @@ export default StyleSheet.create ({
       flex: 1,
       backgroundColor: '#fff',
       alignItems: 'center',
-      padding: 20,
     },
     buttons: {
       justifyContent: 'space-between',
       width: '100%',
-      marginBottom: 20,
+      marginBottom: 10,
     },
     subtitle: {
-      fontSize: 20,
+      fontSize: 15,
       fontWeight: 'bold',
-      marginTop: 20,
+      marginTop: 10,
       marginBottom: 10,
       alignSelf: 'center',
 
@@ -61,13 +60,38 @@ export default StyleSheet.create ({
     },
 
     header: {
-      backgroundColor: 'lightgrey',
+      backgroundColor: 'orange',
       width: '100%',
-      padding: 20,
+      padding: 15,
       alignItems: 'center',
       borderBottomWidth: 1,
       borderBottomColor: 'black',
+      marginBottom: 20,
+
     },
 
-    }
+    footer: {
+      backgroundColor: 'orange',
+      width: '100%',
+      padding: 15,
+      alignItems: 'center',
+      borderTopWidth: 1,
+      borderTopColor: 'black',
+      marginTop: 20,
+      position: 'absolute',
+      bottom: 0,
+    },
+
+    title: {
+      fontSize: 15,
+      fontWeight: 'bold',
+      color: 'white',
+    },
+
+    homecontainer: {
+      flex: 1,
+      backgroundColor: '#fff',
+      alignItems: 'center',
+    },
+
   })

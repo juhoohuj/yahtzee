@@ -14,6 +14,10 @@ const icons = ["dice-1", "dice-2", "dice-3", "dice-4", "dice-5", "dice-6"]
 
 
 const Gameboard = ( {navigation, route} ) => {
+  
+  function randomNum() {
+    return Math.floor(Math.random() * 6) + 1;
+ }
 
   useEffect(() => {
     if (route.params?.newGame) {
@@ -29,6 +33,7 @@ useEffect(() => {
 
   if (totalScore >= BONUS_POINTS_LIMIT) {
     totalScore += BONUS_POINTS;
+    alert("You got a bonus of " + BONUS_POINTS + " points!");
   }
 
   setScore(totalScore);
@@ -36,9 +41,6 @@ useEffect(() => {
 }, [addToScore])
 
 
-  function randomNum() {
-    return Math.floor(Math.random() * 6) + 1;
- }
 
     const [points, setPoints] = useState([
       [1, 0, true],
@@ -123,8 +125,6 @@ useEffect(() => {
           item[1] = !item[1];
           setThrownDices([...thrownDices]);
         }
-
-        console.log(thrownDices);
       }
 
       function newGame() {
@@ -187,10 +187,13 @@ useEffect(() => {
             return navigation.navigate("Scoreboard");
           })
           .catch((error) => console.log(error));
+          newGame()
       }
 
     return(
+
         <View style={Styles.container}>
+            <Header/>
           <Text style={Styles.subtitle}>Current player : {PLAYER}</Text>
           <View style={Styles.buttons}>
             <Buttons/>
@@ -210,12 +213,12 @@ useEffect(() => {
                     )
                 })}
             </View>
-
               <Text style={Styles.subtitle}>Current score: {score}</Text>
+              {checkPoints() ? null : <Button color="green" containerStyle={Styles.button} onPress={addScoreToScoreboard} title="Add score to scoreboard" /> }
+              
           </View>
           
-          {checkPoints() ? null : <Button color="green" containerStyle={Styles.button} onPress={addScoreToScoreboard} title="Add score to scoreboard" /> }
-          
+          <Footer/>
         </View>
 
     )

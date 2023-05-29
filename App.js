@@ -22,7 +22,8 @@ const Nav = () => {
                 <Tab.Screen 
                   name={HOME}
                   component={Home}
-                  options={{tabBarIcon: ()=> <MaterialIcons name="home" size={24} color="black" />}}
+                  options={{tabBarIcon: ()=> <MaterialIcons name="home" size={24} color="black" />, tabBarStyle: {display: 'none'}}}
+                  
                 />
                 <Tab.Screen 
                   name={GAMEBOARD} 
@@ -42,6 +43,7 @@ const Nav = () => {
 export default function App() {
   return (
     <View style={styles.container}>
+      
       <Nav/>
     </View>
   );
